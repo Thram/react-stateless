@@ -22,7 +22,7 @@ class App extends PureComponent {
   changeTo10 = () => this.setState({ forcedCounter: 10 });
   render = () => (
     <div className="App">
-      <h1>Stateless components using the render props patter</h1>
+      <h1>Stateless components using the render props pattern</h1>
 
       <Stateless
         value={{ counter: this.state.forcedCounter }}
