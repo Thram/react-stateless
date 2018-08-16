@@ -6,19 +6,24 @@ export default class extends PureComponent {
   };
   constructor(props) {
     super(props);
-    this.state = props.value;
+    const { value, beforeMount } = props;
+    this.state = value;
+    if(beforeMount) beforeMount(value);
   }
   componentDidMount() {
-    if (this.props.onMount)
-      this.props.onMount({ value: this.state, change: this.updateState });
+    const { afterMount } = this.props;
+    if (afterMount)
+      afterMount({ value: this.state, change: this.updateState });
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.value !== this.props.value) this.updateState();
+    if (prevProps.value !== this.props.value) this.updateState(this.props.value);
   }
-  updateState = (state = this.props.value) => {
-    if (this.props.beforeChange) this.props.beforeChange(state);
-    this.setState(state);
-    if (this.props.afterChange) this.props.afterChange(state);
+  updateState = (nextState = {}) => {
+    const { beforeChange, afterChange } = this.props;
+    const prevState = this.state;
+    if (beforeChange) beforeChange(nextState, prevState);
+    this.setState(nextState);
+    if (afterChange) afterChange(nextState, prevState);
   };
   render = () =>
     this.props.children({ value: this.state, change: this.updateState });
