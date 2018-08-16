@@ -26,7 +26,7 @@ class App extends PureComponent {
 
       <Stateless
         value={{ counter: this.state.forcedCounter }}
-        onMount={({ value, change }) => change({ counter: value.counter + 1 })}
+        afterMount={({ value, change }) => change({ counter: value.counter + 1 })}
         beforeChange={async ({ counter }) => {
           const color = await redIfPair({ counter });
           valueRef.current.style.color = color;
